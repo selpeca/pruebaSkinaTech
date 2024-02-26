@@ -13,6 +13,10 @@ $config = [
         '@npm' => '@vendor/npm-asset',
     ],
     'components' => [
+        'authManager' => [
+            'class' => 'yii\rbac\PhpManager',
+            'defaultRoles' => ['admin', 'basic'],
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'rGF4lcHcQ2zZUpbDN0THfBrwgwUWkOui',
@@ -51,8 +55,9 @@ $config = [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
+            'enableStrictParsing' => true,
             'rules' => [
-                ['class' => 'yii\rest\UrlRule', 'controller' => ['api/user'], 'pluralize' => true],
+                ['class' => 'yii\rest\UrlRule', 'controller' => ['api/user']],
                 ['class' => 'yii\rest\UrlRule', 'controller' => ['api/category'], 'pluralize' => true],
                 ['class' => 'yii\rest\UrlRule', 'controller' => ['api/product'], 'pluralize' => true],
             ],
