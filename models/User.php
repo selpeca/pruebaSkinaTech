@@ -2,21 +2,18 @@
 
 namespace app\models;
 
-use Yii;
+use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
-use yii\web\IdentityInterface;
 
 /**
- * This is the model class for table "users".
- *
- * @property int $id
+ * Class User
+ * @property integer $id
  * @property string $username
- * @property string|null $password_hash
- * @property string|null $access_token
- * @property int $is_active
- * @property int|null $owner
+ * @property string $password_hash
+ * @property string $access_token
+ * @property string $is_active
  */
-class User  extends ActiveRecord implements IdentityInterface
+class User extends ActiveRecord implements \yii\web\IdentityInterface
 {
     /**
      * {@inheritdoc}
@@ -55,30 +52,36 @@ class User  extends ActiveRecord implements IdentityInterface
             'owner' => 'Es administrador',
         ];
     }
-/**
-     * Finds an identity by the given ID.
-     *
-     * @param string|int $id the ID to be looked for
-     * @return IdentityInterface|null the identity object that matches the given ID.
+    
+    /**
+     * {@inheritdoc}
      */
     public static function findIdentity($id)
     {
-        return static::findOne($id);
+        return self::findOne($id);
     }
 
     /**
-     * Finds an identity by the given token.
-     *
-     * @param string $token the token to be looked for
-     * @return IdentityInterface|null the identity object that matches the given token.
+     * {@inheritdoc}
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        return static::findOne(['access_token' => $token]);
+        return self::find()->andWhere(['access_token' => $token])->one();
     }
 
     /**
-     * @return int|string current user ID
+     * Finds user by username
+     *
+     * @param string $username
+     * @return static|null
+     */
+    public static function findByUsername($username)
+    {
+        return self::find()->andWhere(['username' => $username])->one();
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -86,19 +89,29 @@ class User  extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @return string|null current user auth key
+     * {@inheritdoc}
      */
     public function getAuthKey()
     {
-        return $this->auth_key;
+        return null;
     }
 
     /**
-     * @param string $authKey
-     * @return bool|null if auth key is valid for current user
+     * {@inheritdoc}
      */
     public function validateAuthKey($authKey)
     {
-        return $this->getAuthKey() === $authKey;
+        return false;
+    }
+
+    /**
+     * Validates password
+     *
+     * @param string $password password to validate
+     * @return bool if password provided is valid for current user
+     */
+    public function validatePassword($password)
+    {
+        return \Yii::$app->security->validatePassword($password, $this->password_hash);
     }
 }

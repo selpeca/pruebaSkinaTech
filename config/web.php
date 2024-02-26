@@ -5,34 +5,37 @@ $db = require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'basic',
+    'name' => 'Vue3 + Yii2',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
-        '@npm'   => '@vendor/npm-asset',
+        '@npm' => '@vendor/npm-asset',
     ],
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'rGF4lcHcQ2zZUpbDN0THfBrwgwUWkOui',
             'parsers' => [
-                'application/json' => 'yii\web\JsonParser',
-            ],
+                'application/json' => \yii\web\JsonParser::class
+            ]
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
             'identityClass' => 'app\models\User',
-            'enableAutoLogin' => true,
+            'enableAutoLogin' => false,
+            'enableSession' => false
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
         'mailer' => [
-            'class' => \yii\symfonymailer\Mailer::class,
-            'viewPath' => '@app/mail',
-            // send all mails to a file by default.
+            'class' => 'yii\swiftmailer\Mailer',
+            // send all mails to a file by default. You have to set
+            // 'useFileTransport' to false and configure a transport
+            // for the mailer to send real emails.
             'useFileTransport' => true,
         ],
         'log' => [
@@ -46,22 +49,21 @@ $config = [
         ],
         'db' => $db,
         'urlManager' => [
-            'enablePrettyUrl'     => true,
-            'showScriptName'      => false,
-            'enableStrictParsing' => true,
-            'rules'               => [
-                ['class' => 'yii\rest\UrlRule', 'controller' => 'user', 'pluralize' => true],
-                ['class' => 'yii\rest\UrlRule', 'controller' => 'category', 'pluralize' => true],
-                ['class' => 'yii\rest\UrlRule', 'controller' => 'product', 'pluralize' => true],
-                '<url:(.*)>' => 'site/index',
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            'rules' => [
+                ['class' => 'yii\rest\UrlRule', 'controller' => ['api/user'], 'pluralize' => true],
+                ['class' => 'yii\rest\UrlRule', 'controller' => ['api/category'], 'pluralize' => true],
+                ['class' => 'yii\rest\UrlRule', 'controller' => ['api/product'], 'pluralize' => true],
             ],
         ],
+
     ],
-    // 'modules' => [
-    //     'api' => [
-    //         'class' => \app\modules\api\Module::class
-    //     ]
-    // ],
+    'modules' => [
+        'api' => [
+            'class' => \app\modules\api\Module::class
+        ]
+    ],
     'params' => $params,
 ];
 

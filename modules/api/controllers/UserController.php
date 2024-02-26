@@ -33,19 +33,19 @@ class UserController extends Controller
         ];
     }
 
-    // public function actionRegister()
-    // {
+    public function actionRegister()
+    {
 
-    //     $model = new RegisterForm();
-    //     if ($model->load(Yii::$app->request->post(), '') && $model->register()) {
-    //         return $model->user;
-    //     }
+        $model = new RegisterForm();
+        if ($model->load(Yii::$app->request->post(), '') && $model->register()) {
+            return $model->user;
+        }
 
-    //     Yii::$app->response->statusCode = 422;
-    //     return [
-    //         'errors' => $model->errors
-    //     ];
-    // }
+        Yii::$app->response->statusCode = 422;
+        return [
+            'errors' => $model->errors
+        ];
+    }
 
     public function actionData()
     {
@@ -60,21 +60,4 @@ class UserController extends Controller
         }
         return $user;
     }
-
-    // public function actions(): array 
-    // {
-    //     $actions = parent::actions();
-    //     $actions['index'] = [
-    //         'class' => 'yii\rest\IndexAction',
-    //         'modelClass' => $this->modelClass,
-    //         'prepareDataProvider' => fn() => new ActiveDataProvider(
-    //             [
-    //                 'query' => $this->modelClass::find(),
-    //                 'pagination' => false,
-    //             ]
-    //         ),
-    //     ];
-
-    //     return $actions;
-    // }
 }
