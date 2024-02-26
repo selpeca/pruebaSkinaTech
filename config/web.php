@@ -57,9 +57,10 @@ $config = [
             'showScriptName' => false,
             'enableStrictParsing' => true,
             'rules' => [
-                ['class' => 'yii\rest\UrlRule', 'controller' => ['api/user']],
+                // ['class' => 'yii\rest\UrlRule', 'controller' => ['api/user']],
                 ['class' => 'yii\rest\UrlRule', 'controller' => ['api/category'], 'pluralize' => true],
                 ['class' => 'yii\rest\UrlRule', 'controller' => ['api/product'], 'pluralize' => true],
+                '<url:(.*)>' => 'site/index',
             ],
         ],
 

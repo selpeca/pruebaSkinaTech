@@ -11,22 +11,6 @@ class ProductController extends ActiveController
 {
     public $modelClass = 'app\models\Product';
     
-    public function behaviors()
-    {
-        $behaviors = parent::behaviors();
-        $auth = $behaviors['authenticator'];
-        $auth['authMethods'] = [
-            HttpBearerAuth::class
-        ];
-        unset($behaviors['authenticator']);
-        $behaviors['cors'] = [
-            'class' => Cors::class
-        ];
-        $behaviors['authenticator'] = $auth;
-
-        return $behaviors;
-    }
-
     public function actions(): array 
     {
         $actions = parent::actions();
